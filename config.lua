@@ -2,7 +2,7 @@ Config = {}
 
 Config.Maps = {
     {
-        Map = "bw_tobacco.ymap",
+        Map = "bw_tobacco.ymap", --change to your map name 
         X = -1068.44,
         Y = -1254.98,
         Z =  68.55,
