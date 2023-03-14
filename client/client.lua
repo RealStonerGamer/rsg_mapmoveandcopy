@@ -1,20 +1,19 @@
-local mapConfig = {}
+local currentMapConfig = {}
 
 RegisterNetEvent('rsg_loadmaps:loadMap')
 AddEventHandler('rsg_loadmaps:loadMap', function(config)
-    mapConfig = config
-  --  print(mapConfig)
-
+    currentMapConfig = config
 end)
 
-function LoadMap(mapConfig)
-    local mapName = mapConfig
+function LoadMap(currentMapConfig)
+    local mapName = currentMapConfig.Map
     for mapKey, mapConfig in pairs(Config.Maps) do
         if mapConfig.Map == mapName then
-   -- print(mapConfig)
-    TriggerServerEvent('rsg_loadmaps:loadMap', mapConfig[mapKey])
-    return
-      end
+            TriggerServerEvent('rsg_loadmaps:loadMap', currentMapConfig)
+            return
+        end
+        print('Map ' .. mapConfig.Map .. ' does not exist in the config.')
+
     end
 end
 
@@ -23,10 +22,10 @@ Citizen.CreateThread(function()
         Citizen.Wait(0)
         local playerPed = PlayerPedId()
         local playerCoords = GetEntityCoords(playerPed)
-        local distance = Vdist(playerCoords.x, playerCoords.y, playerCoords.z, mapConfig.X, mapConfig.Y, mapConfig.Z)
+        local distance = Vdist(playerCoords.x, playerCoords.y, playerCoords.z, currentMapConfig.X, currentMapConfig.Y, currentMapConfig.Z)
 
-            LoadMap(mapConfig)
-            print(mapConfig)
-    
+        if distance < 200 then
+            LoadMap(currentMapConfig)
         end
+    end
 end)
